@@ -1,0 +1,12 @@
+# Ignore build files.
+out/
+target/
+
+# Ignore logs from test builds.
+logs/
+
+# Ignore IDE files.
+*.iml
+.idea/
+
+twitchtohue.properties

@@ -1,0 +1,5 @@
+hue.address=IP-ADDRESS
+hue.token=HUE_TOKEN
+hue.lightId=18
+hue.onTime=6000
+http.port=22222
