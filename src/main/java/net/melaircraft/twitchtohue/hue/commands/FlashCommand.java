@@ -1,6 +1,6 @@
 package net.melaircraft.twitchtohue.hue.commands;
 
-import net.melaircraft.twitchtohue.hue.BulbData;
+import net.melaircraft.twitchtohue.hue.bulbs.BulbData;
 
 public class FlashCommand implements Command {
     private final BulbData bulbData;

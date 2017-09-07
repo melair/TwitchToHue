@@ -1,7 +1,7 @@
 package net.melaircraft.twitchtohue.web;
 
-import net.melaircraft.twitchtohue.hue.BulbData;
 import net.melaircraft.twitchtohue.hue.Controller;
+import net.melaircraft.twitchtohue.hue.bulbs.XYBulbData;
 import net.melaircraft.twitchtohue.hue.commands.FlashCommand;
 
 import javax.ws.rs.GET;
@@ -30,10 +30,10 @@ public class NotificationEndPoint {
 
         switch (type) {
             case "follow":
-                controller.submitCommand(new FlashCommand(new BulbData(true, 	1.0, 1.0, 26964)));
+                controller.submitCommand(new FlashCommand(new XYBulbData(true, 1.0, 0.6917, 0.2969)));
                 break;
             case "host":
-                controller.submitCommand(new FlashCommand(new BulbData(true, 1.0, 1.0, 47215)));
+                controller.submitCommand(new FlashCommand(new XYBulbData(true, 1.0, 0.2093,0.6698)));
                 break;
         }
 

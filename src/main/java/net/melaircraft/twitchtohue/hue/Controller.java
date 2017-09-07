@@ -5,6 +5,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import net.melaircraft.twitchtohue.configuration.Configuration;
+import net.melaircraft.twitchtohue.hue.bulbs.BulbData;
 import net.melaircraft.twitchtohue.hue.commands.Command;
 import net.melaircraft.twitchtohue.hue.commands.FlashCommand;
 import org.json.JSONObject;
@@ -55,13 +56,7 @@ public class Controller implements Runnable {
 
             final JSONObject rootObject = jsonNode.getObject();
             final JSONObject stateObject = rootObject.getJSONObject("state");
-
-            final boolean state = stateObject.getBoolean("on");
-            final double brightness = stateObject.getInt("bri") / 255.0F;
-            final double saturation = stateObject.getInt("sat") / 255.0F;
-            final int hue = stateObject.getInt("hue");
-
-            return new BulbData(state, brightness, saturation, hue);
+            return BulbData.getBulb(stateObject);
         } catch (UnirestException e) {
             e.printStackTrace();
             return null;
@@ -69,12 +64,7 @@ public class Controller implements Runnable {
     }
 
     private void setBulb(BulbData bulb) {
-        final JSONObject request = new JSONObject();
-
-        request.put("on", bulb.isState());
-        request.put("bri", (int) Math.floor(bulb.getBrightness() * 255));
-        request.put("sat", (int) Math.floor(bulb.getSaturation() * 255));
-        request.put("hue", bulb.getHue());
+        final JSONObject request = bulb.getJson();
         request.put("transitiontime", 5);
 
         try {
