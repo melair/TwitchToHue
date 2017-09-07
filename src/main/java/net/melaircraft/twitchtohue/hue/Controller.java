@@ -52,8 +52,6 @@ public class Controller implements Runnable {
                 return null;
             }
 
-            System.out.println("Get Bulb Debug: " + check.getBody().toString());
-
             final JSONObject rootObject = jsonNode.getObject();
             final JSONObject stateObject = rootObject.getJSONObject("state");
             return BulbData.getBulb(stateObject);
@@ -65,7 +63,7 @@ public class Controller implements Runnable {
 
     private void setBulb(BulbData bulb) {
         final JSONObject request = bulb.getJson();
-        request.put("transitiontime", 5);
+        request.put("transitiontime", 3);
 
         try {
             final HttpResponse<String> check = Unirest.put(lightURL + "/state").body(request).asString();
@@ -76,8 +74,6 @@ public class Controller implements Runnable {
         } catch (UnirestException e) {
             e.printStackTrace();
         }
-
-        System.out.println("Set bulb status to: " + bulb);
     }
 
     public void submitCommand(Command command) {
@@ -87,13 +83,17 @@ public class Controller implements Runnable {
     private void runCommand(Command command) throws InterruptedException {
         final BulbData originalBulbData = getBulb();
 
+        System.out.println("GET: Current Color: " + originalBulbData);
+
         if (command instanceof FlashCommand) {
             final FlashCommand flashCommand = (FlashCommand) command;
+            System.out.println("SET: Notification Color: " + flashCommand.getBulbData());
             setBulb(flashCommand.getBulbData());
         }
 
         Thread.sleep(configuration.getHueOnTime());
 
+        System.out.println("SET: Original Color: " + originalBulbData);
         setBulb(originalBulbData);
     }
 
